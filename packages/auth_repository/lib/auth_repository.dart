@@ -5,9 +5,7 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-import 'package:pictordle/app/app.dart';
-import 'package:pictordle/bootstrap.dart';
+/// A Very Good Project created by Very Good CLI.
+library auth_repository;
 
-void main() {
-  bootstrap(() => const App());
-}
+export 'src/auth_repository.dart';

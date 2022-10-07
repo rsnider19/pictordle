@@ -8,7 +8,14 @@ environment:
   flutter: 3.3.3
 
 dependencies:
+  auth_repository:
+    path: packages/auth_repository
   bloc: ^8.1.0
+  cloud_firestore: ^3.5.1
+  dartx: ^1.1.0
+  firebase_auth: ^3.11.2
+  firebase_core: ^1.24.0
+  firebase_storage: ^10.3.11
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.1

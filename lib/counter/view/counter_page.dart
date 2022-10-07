@@ -5,6 +5,7 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
+import 'package:auth_repository/auth_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pictordle/counter/counter.dart';
@@ -30,7 +31,15 @@ class CounterView extends StatelessWidget {
     final l10n = context.l10n;
     return Scaffold(
       appBar: AppBar(title: Text(l10n.counterAppBarTitle)),
-      body: const Center(child: CounterText()),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(context.read<AuthRepository>().getUserId() ?? 'Not logged in'),
+            const CounterText(),
+          ],
+        ),
+      ),
       floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.end,
