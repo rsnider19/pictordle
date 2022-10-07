@@ -9,7 +9,8 @@ import 'package:auth_repository/auth_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:pictordle/counter/counter.dart';
+import 'package:pictordle/game/cubit/game_cubit.dart';
+import 'package:pictordle/game/view/view.dart';
 import 'package:pictordle/l10n/l10n.dart';
 
 class App extends StatelessWidget {
@@ -26,19 +27,24 @@ class App extends StatelessWidget {
       providers: [
         RepositoryProvider.value(value: _authRepository),
       ],
-      child: MaterialApp(
-        theme: ThemeData(
-          appBarTheme: const AppBarTheme(color: Color(0xFF13B9FF)),
-          colorScheme: ColorScheme.fromSwatch(
-            accentColor: const Color(0xFF13B9FF),
-          ),
-        ),
-        localizationsDelegates: const [
-          AppLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (_) => GameCubit()..load()),
         ],
-        supportedLocales: AppLocalizations.supportedLocales,
-        home: const CounterPage(),
+        child: MaterialApp(
+          theme: ThemeData(
+            appBarTheme: const AppBarTheme(color: Color(0xFF13B9FF)),
+            colorScheme: ColorScheme.fromSwatch(
+              accentColor: const Color(0xFF13B9FF),
+            ),
+          ),
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+          ],
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: const GamePage(),
+        ),
       ),
     );
   }
