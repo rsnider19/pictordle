@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:bloc/bloc.dart';
 import 'package:dartx/dartx.dart';
 import 'package:equatable/equatable.dart';
@@ -50,25 +48,90 @@ class GameCubit extends Cubit<GameState> {
     emit(
       state.copyWith(
         status: GameStatus.success,
+        wordOfTheDay: 'CIGAR',
         keyboardKeys: getKeyboardKeys(),
       ),
     );
   }
 
-  void enterOnPressed() {}
+  Future<void> enterOnPressed() async {
+    final guess = state.guesses[state.activeRowIndex];
 
-  void deleteOnPressed() {}
+    if (guess.length < 5) {
+      emit(
+        state.updateGuess(
+          rowIndex: state.activeRowIndex,
+          newValue: '',
+        ),
+      );
 
-  void letterOnPressed(KeyboardKey key) {
+      return;
+    }
+
+    // TODO(rob): check if it is a valid word
+
+    var keyboardKeys = state.keyboardKeys.map((k) => k).toList();
+    for (final letter in guess.split('')) {
+      final key = keyboardKeys.singleWhere((k) => k.key == letter);
+
+      keyboardKeys = keyboardKeys.replace(
+        key,
+        key.copyWith(
+          state: state.wordOfTheDay.contains(letter) ? KeyState.correct : KeyState.incorrect,
+        ),
+      );
+    }
+
+    if (guess == state.wordOfTheDay) {
+      await _completeGame(GameStateOfPlay.won);
+      return;
+    }
+
+    // TODO(rob): update user game data in firestore
+
     emit(
       state.copyWith(
-        keyboardKeys: state.keyboardKeys.replace(
-          key,
-          key.copyWith(
-            state: Random().nextInt(2) == 1 ? KeyState.incorrect : KeyState.correct,
-          ),
-        ),
+        activeRowIndex: state.activeRowIndex + 1,
+        keyboardKeys: keyboardKeys,
       ),
     );
+
+    if (state.activeRowIndex >= 6) {
+      await _completeGame(GameStateOfPlay.lost);
+    }
+  }
+
+  void deleteOnPressed() {
+    final guess = state.guesses[state.activeRowIndex];
+
+    if (guess.isEmpty) {
+      return;
+    }
+
+    emit(
+      state.updateGuess(
+        rowIndex: state.activeRowIndex,
+        newValue: guess.substring(0, guess.length - 1),
+      ),
+    );
+  }
+
+  void letterOnPressed(KeyboardKey keyboardKey) {
+    final guess = state.guesses[state.activeRowIndex];
+
+    if (guess.length == 5) {
+      return;
+    }
+
+    emit(
+      state.updateGuess(
+        rowIndex: state.activeRowIndex,
+        newValue: '$guess${keyboardKey.key}',
+      ),
+    );
+  }
+
+  Future<void> _completeGame(GameStateOfPlay gameStateOfPlay) async {
+    emit(state.copyWith(gameStateOfPlay: gameStateOfPlay));
   }
 }

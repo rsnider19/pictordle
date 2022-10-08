@@ -61,7 +61,7 @@ class KeyboardKeyWidget extends StatelessWidget {
             }
 
             return TextButton(
-              onPressed: keyboardKey.state.isUnused ? () => gameCubit.letterOnPressed(keyboardKey) : null,
+              onPressed: () => gameCubit.letterOnPressed(keyboardKey),
               style: textButtonStyle,
               child: Text(
                 keyboardKey.key,

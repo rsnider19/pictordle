@@ -55,7 +55,7 @@ class GameView extends StatelessWidget {
       child: Column(
         children: const [
           Expanded(
-            child: Gameboard(),
+            child: Gameboard(pictordleWord: 'CIGAR'),
           ),
           Keyboard(),
         ],

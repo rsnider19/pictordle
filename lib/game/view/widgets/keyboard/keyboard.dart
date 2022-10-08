@@ -15,35 +15,42 @@ class Keyboard extends StatelessWidget {
       (GameCubit cubit) => cubit.state.keyboardKeys,
     );
 
-    return Padding(
-      padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
-      child: Center(
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            return Column(
-              children: KeyboardRow.values.map(
-                (row) {
-                  final rowKeys = keyboardKeys.where((k) => k.row == row);
+    final gameStateOfPlay = context.select(
+      (GameCubit cubit) => cubit.state.gameStateOfPlay,
+    );
 
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: List.generate(
-                      rowKeys.length,
-                      (index) {
-                        final key = rowKeys.elementAt(index);
-                        final width = constraints.maxWidth / 10 * (key.type.isLetter ? 1 : 1.5);
+    return IgnorePointer(
+      ignoring: gameStateOfPlay != GameStateOfPlay.inProgress,
+      child: Padding(
+        padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
+        child: Center(
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return Column(
+                children: KeyboardRow.values.map(
+                  (row) {
+                    final rowKeys = keyboardKeys.where((k) => k.row == row);
 
-                        return KeyboardKeyWidget(
-                          keyboardKey: key,
-                          width: width,
-                        );
-                      },
-                    ),
-                  );
-                },
-              ).toList(),
-            );
-          },
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: List.generate(
+                        rowKeys.length,
+                        (index) {
+                          final key = rowKeys.elementAt(index);
+                          final width = constraints.maxWidth / 10 * (key.type.isLetter ? 1 : 1.5);
+
+                          return KeyboardKeyWidget(
+                            keyboardKey: key,
+                            width: width,
+                          );
+                        },
+                      ),
+                    );
+                  },
+                ).toList(),
+              );
+            },
+          ),
         ),
       ),
     );
