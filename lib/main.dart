@@ -6,17 +6,21 @@
 // https://opensource.org/licenses/MIT.
 
 import 'package:auth_repository/auth_repository.dart';
+import 'package:game_repository/game_repository.dart';
 import 'package:pictordle/app/app.dart';
 import 'package:pictordle/bootstrap.dart';
 
 void main() {
   bootstrap(
-    (firebaseAuth) async {
+    (firebaseAuth, firebaseFirestore) async {
       final authRepository = AuthRepository(firebaseAuth);
       await authRepository.authenticateAnonymously();
 
+      final gameRepository = GameRepository(firebaseFirestore);
+
       return App(
         authRepository: authRepository,
+        gameRepository: gameRepository,
       );
     },
   );

@@ -1,6 +1,7 @@
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:game_repository/game_repository.dart';
 import 'package:pictordle/game/cubit/game_cubit.dart';
 import 'package:pictordle/game/view/widgets/gameboard/gameboard_row_widget.dart';
 
@@ -63,8 +64,8 @@ class _GameboardState extends State<Gameboard> {
                 (index) => Flexible(
                   child: GameboardRowWidget(
                     guess: state.guesses[index],
-                    isRowComplete: index < state.activeRowIndex,
-                    isGameComplete: state.gameStateOfPlay != GameStateOfPlay.inProgress,
+                    isRowComplete: index < state.currentIndex,
+                    isGameComplete: state.stateOfPlay != StateOfPlay.inProgress,
                     correctLetters: state.correctLetters,
                   ),
                 ),

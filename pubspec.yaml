@@ -23,6 +23,8 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   flutter_spinkit: ^5.1.0
+  game_repository:
+    path: packages/game_repository
   intl: ^0.17.0
   pictordle_utils:
     path: packages/pictordle_utils

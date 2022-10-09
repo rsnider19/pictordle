@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:game_repository/game_repository.dart';
 import 'package:pictordle/game/cubit/game_cubit.dart';
 import 'package:pictordle/game/models/keyboard_key.dart';
 import 'package:pictordle/game/view/widgets/keyboard/keyboard_key_widget.dart';
@@ -16,11 +17,11 @@ class Keyboard extends StatelessWidget {
     );
 
     final gameStateOfPlay = context.select(
-      (GameCubit cubit) => cubit.state.gameStateOfPlay,
+      (GameCubit cubit) => cubit.state.stateOfPlay,
     );
 
     return IgnorePointer(
-      ignoring: gameStateOfPlay != GameStateOfPlay.inProgress,
+      ignoring: gameStateOfPlay != StateOfPlay.inProgress,
       child: Padding(
         padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
         child: Center(
