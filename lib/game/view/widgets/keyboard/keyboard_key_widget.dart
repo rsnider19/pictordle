@@ -38,7 +38,7 @@ class KeyboardKeyWidget extends StatelessWidget {
           builder: (context) {
             if (keyboardKey.type == KeyType.enter) {
               return TextButton(
-                onPressed: gameCubit.enterOnPressed,
+                onPressed: () => gameCubit.enterOnPressed(context),
                 style: textButtonStyle,
                 child: const Icon(
                   Icons.keyboard_return,

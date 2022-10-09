@@ -2,8 +2,11 @@ import 'package:bloc/bloc.dart';
 import 'package:dartx/dartx.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:pictordle/game/models/models.dart';
 import 'package:pictordle_utils/pictordle_utils.dart';
+
+import 'all_words.dart';
 
 part 'game_state.dart';
 
@@ -54,7 +57,7 @@ class GameCubit extends Cubit<GameState> {
     );
   }
 
-  Future<void> enterOnPressed() async {
+  Future<void> enterOnPressed(BuildContext context) async {
     final guess = state.guesses[state.activeRowIndex];
 
     if (guess.length < 5) {
@@ -68,7 +71,21 @@ class GameCubit extends Cubit<GameState> {
       return;
     }
 
-    // TODO(rob): check if it is a valid word
+    if (allWords.contains(guess.toLowerCase()) == false) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text(
+            'Not in word list',
+            textAlign: TextAlign.center,
+          ),
+          behavior: SnackBarBehavior.floating,
+          width: 200,
+          duration: 1500.milliseconds,
+        ),
+      );
+
+      return;
+    }
 
     var keyboardKeys = state.keyboardKeys.map((k) => k).toList();
     for (final letter in guess.split('')) {
