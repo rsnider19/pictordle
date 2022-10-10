@@ -5,11 +5,8 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-import 'package:bloc/bloc.dart';
+/// A Very Good Project created by Very Good CLI.
+library user_repository;
 
-class CounterCubit extends Cubit<int> {
-  CounterCubit() : super(0);
-
-  void increment() => emit(state + 1);
-  void decrement() => emit(state - 1);
-}
+export 'src/models/models.dart';
+export 'src/user_repository.dart';
