@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pictordle/game/cubit/game_cubit.dart';
 import 'package:pictordle/game/view/widgets/widgets.dart';
+import 'package:pictordle/help/help_page.dart';
 import 'package:pictordle/loader/loader.dart';
 
 class GamePage extends StatelessWidget {
@@ -9,11 +10,13 @@ class GamePage extends StatelessWidget {
     super.key,
   });
 
+  static const String routeName = '/game';
+
   static Route<GamePage> route() {
     return MaterialPageRoute(
       builder: (context) => const GamePage(),
       settings: const RouteSettings(
-        name: '/game',
+        name: routeName,
       ),
     );
   }
@@ -22,8 +25,14 @@ class GamePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Pictordle'),
+        title: const Text('Pictordle'),
         centerTitle: true,
+        actions: [
+          IconButton(
+            onPressed: () => Navigator.of(context).push(HelpPage.route()),
+            icon: const Icon(Icons.help_outline),
+          ),
+        ],
       ),
       body: BlocBuilder<GameCubit, GameState>(
         buildWhen: (previous, current) => previous.status != current.status,

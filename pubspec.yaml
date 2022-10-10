@@ -31,6 +31,7 @@ dependencies:
   intl: ^0.17.0
   pictordle_utils:
     path: packages/pictordle_utils
+  shared_preferences: ^2.0.15
   user_repository:
     path: packages/user_repository
 
