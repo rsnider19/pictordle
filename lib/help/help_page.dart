@@ -28,7 +28,10 @@ class HelpPage extends StatelessWidget {
     return WillPopScope(
       onWillPop: () async {
         unawaited(
-          context.read<SharedPreferences>().setBool(SharedPrefKeys.helpPageViewed.name, true),
+          context.read<SharedPreferences>().setBool(
+                SharedPrefKeys.helpPageViewed.name,
+                true,
+              ),
         );
         return true;
       },
@@ -43,11 +46,14 @@ class HelpPage extends StatelessWidget {
           centerTitle: true,
           elevation: 0,
         ),
-        body: ConstrainedBox(
-          constraints: const BoxConstraints(
-            maxWidth: 500,
+        body: Align(
+          alignment: Alignment.topCenter,
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(
+              maxWidth: 500,
+            ),
+            child: const HelpContent(),
           ),
-          child: const HelpContent(),
         ),
       ),
     );

@@ -58,20 +58,27 @@ class GamePage extends StatelessWidget {
             ),
           ],
         ),
-        body: BlocBuilder<GameCubit, GameState>(
-          buildWhen: (previous, current) => previous.status != current.status,
-          builder: (context, state) {
-            switch (state.status) {
-              case GameStatus.initial:
-                return const SizedBox.shrink();
-              case GameStatus.loading:
-                return const Loader();
-              case GameStatus.success:
-                return const GameView();
-              case GameStatus.failure:
-                return const Center(child: Text('Oops! Something went wrong.'));
-            }
-          },
+        body: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(
+              maxWidth: 500,
+            ),
+            child: BlocBuilder<GameCubit, GameState>(
+              buildWhen: (previous, current) => previous.status != current.status,
+              builder: (context, state) {
+                switch (state.status) {
+                  case GameStatus.initial:
+                    return const SizedBox.shrink();
+                  case GameStatus.loading:
+                    return const Loader();
+                  case GameStatus.success:
+                    return const GameView();
+                  case GameStatus.failure:
+                    return const Center(child: Text('Oops! Something went wrong.'));
+                }
+              },
+            ),
+          ),
         ),
       ),
     );

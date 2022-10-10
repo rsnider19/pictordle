@@ -15,15 +15,19 @@ class HelpExample extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width / 2,
-      child: GameboardRowWidget(
-        correctLetters: correctLetters,
-        guess: guess,
-        isGameComplete: isGameComplete,
-        isRowComplete: true,
-        fontSize: 24,
-      ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return SizedBox(
+          width: constraints.maxWidth / 2,
+          child: GameboardRowWidget(
+            correctLetters: correctLetters,
+            guess: guess,
+            isGameComplete: isGameComplete,
+            isRowComplete: true,
+            fontSize: 24,
+          ),
+        );
+      }
     );
   }
 }
