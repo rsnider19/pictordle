@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:game_repository/game_repository.dart';
 import 'package:image_repository/image_repository.dart';
 import 'package:pictordle/game/models/models.dart';
+import 'package:pictordle/results/results_dialog.dart';
 import 'package:user_repository/user_repository.dart';
 
 part 'game_state.dart';
@@ -125,7 +126,7 @@ class GameCubit extends Cubit<GameState> {
 
     // guess is the word of the day, complete the game
     if (guess == state.wordOfTheDay) {
-      await _completeGame(StateOfPlay.won);
+      await _completeGame(context, StateOfPlay.won);
       return;
     }
 
@@ -155,7 +156,7 @@ class GameCubit extends Cubit<GameState> {
 
     // this was user's last guess, so they lose
     if (state.currentGame!.currentIndex >= 6) {
-      await _completeGame(StateOfPlay.lost);
+      await _completeGame(context, StateOfPlay.lost);
     }
   }
 
@@ -193,25 +194,37 @@ class GameCubit extends Cubit<GameState> {
     );
   }
 
-  Future<void> _completeGame(StateOfPlay gameStateOfPlay) async {
+  Future<void> _completeGame(BuildContext context, StateOfPlay gameStateOfPlay) async {
+    final updatedCurrentGame = state.currentGame!.copyWith(
+      stateOfPlay: gameStateOfPlay,
+    );
+
+    final updatedUser = await _userRepository.completeGame(
+      state.user!.copyWith(
+        currentGame: updatedCurrentGame,
+      ),
+    );
+
     emit(
       state.copyWith(
         keyboardKeys: getKeyboardKeys(
           wordOfTheDay: state.wordOfTheDay,
           guesses: state.guesses,
         ),
-        currentGame: state.currentGame!.copyWith(
-          stateOfPlay: gameStateOfPlay,
-        ),
+        currentGame: updatedCurrentGame,
+        user: updatedUser,
       ),
     );
 
-    await _userRepository.completeGame(
-      state.user!.copyWith(
-        currentGame: state.currentGame,
+    showResults(context);
+  }
+
+  void showResults(BuildContext context) {
+    Future.delayed(
+      1500.milliseconds,
+      () => unawaited(
+        ResultsDialog.open(context, state.user!),
       ),
     );
-
-    // showResults();
   }
 }

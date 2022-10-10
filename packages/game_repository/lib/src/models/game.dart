@@ -6,6 +6,10 @@ part 'game.g.dart';
 
 enum StateOfPlay { inProgress, won, lost }
 
+extension StateOfPlayExt on StateOfPlay {
+  bool get isComplete => this == StateOfPlay.won || this == StateOfPlay.lost;
+}
+
 @immutable
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class Game extends Equatable {
@@ -53,6 +57,18 @@ class Game extends Equatable {
   }
 
   Map<String, dynamic> toJson() => _$GameToJson(this);
+
+  String toEmojis() => guesses
+      .where((guess) => guess.isNotEmpty)
+      .map(
+        (e) => e
+            .split('')
+            .map(
+              (e) => wordOfTheDay.contains(e) ? '🟧' : '⬜️',
+            )
+            .join(),
+      )
+      .join('\n');
 
   @override
   List<Object> get props => [
