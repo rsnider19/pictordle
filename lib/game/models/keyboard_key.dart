@@ -6,25 +6,25 @@ import 'package:flutter/material.dart';
 class KeyboardKey extends Equatable {
   const KeyboardKey({
     required this.key,
-    required this.row,
+    required this.rowNumber,
     required this.type,
     this.state = KeyState.unused,
   });
 
   final String key;
-  final KeyboardRow row;
+  final int rowNumber;
   final KeyType type;
   final KeyState state;
 
   KeyboardKey copyWith({
     String? key,
-    KeyboardRow? row,
+    int? rowNumber,
     KeyType? type,
     KeyState? state,
   }) {
     return KeyboardKey(
       key: key ?? this.key,
-      row: row ?? this.row,
+      rowNumber: rowNumber ?? this.rowNumber,
       type: type ?? this.type,
       state: state ?? this.state,
     );
@@ -33,13 +33,11 @@ class KeyboardKey extends Equatable {
   @override
   List<Object> get props => [
         key,
-        row,
+        rowNumber,
         type,
         state,
       ];
 }
-
-enum KeyboardRow { row1, row2, row3 }
 
 enum KeyType { letter, enter, delete }
 

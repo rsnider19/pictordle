@@ -34,5 +34,5 @@ class AuthRepository {
     }
   }
 
-  String? getUserId() => _firebaseAuth.currentUser?.uid;
+  String getUserId() => _firebaseAuth.currentUser!.uid;
 }

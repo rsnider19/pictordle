@@ -1,3 +1,4 @@
+import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:game_repository/game_repository.dart';
@@ -28,9 +29,12 @@ class Keyboard extends StatelessWidget {
           child: LayoutBuilder(
             builder: (context, constraints) {
               return Column(
-                children: KeyboardRow.values.map(
-                  (row) {
-                    final rowKeys = keyboardKeys.where((k) => k.row == row);
+                children: List.generate(
+                  keyboardKeys.map((k) => k.rowNumber).max()! + 1,
+                  (index) {
+                    final rowKeys = keyboardKeys.where(
+                      (k) => k.rowNumber == index,
+                    );
 
                     return Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -38,7 +42,8 @@ class Keyboard extends StatelessWidget {
                         rowKeys.length,
                         (index) {
                           final key = rowKeys.elementAt(index);
-                          final width = constraints.maxWidth / 10 * (key.type.isLetter ? 1 : 1.5);
+                          final widthScale = key.type.isLetter ? 1 : 1.5;
+                          final width = constraints.maxWidth / 10 * widthScale;
 
                           return KeyboardKeyWidget(
                             keyboardKey: key,
@@ -48,7 +53,7 @@ class Keyboard extends StatelessWidget {
                       ),
                     );
                   },
-                ).toList(),
+                ),
               );
             },
           ),

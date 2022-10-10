@@ -10,33 +10,46 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:game_repository/game_repository.dart';
+import 'package:image_repository/image_repository.dart';
 import 'package:pictordle/game/cubit/game_cubit.dart';
 import 'package:pictordle/game/view/view.dart';
 import 'package:pictordle/l10n/l10n.dart';
+import 'package:user_repository/user_repository.dart';
 
 class App extends StatelessWidget {
   const App({
     super.key,
-    required AuthRepository authRepository,
     required GameRepository gameRepository,
-  })  : _authRepository = authRepository,
-        _gameRepository = gameRepository;
+    required UserRepository userRepository,
+    required AuthRepository authRepository,
+    required ImageRepository imageRepository,
+  })  : _gameRepository = gameRepository,
+        _userRepository = userRepository,
+        _authRepository = authRepository,
+        _imageRepository = imageRepository;
 
-  final AuthRepository _authRepository;
   final GameRepository _gameRepository;
+  final UserRepository _userRepository;
+  final AuthRepository _authRepository;
+  final ImageRepository _imageRepository;
 
   @override
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
       providers: [
-        RepositoryProvider.value(value: _authRepository),
         RepositoryProvider.value(value: _gameRepository),
+        RepositoryProvider.value(value: _userRepository),
+        RepositoryProvider.value(value: _authRepository),
+        RepositoryProvider.value(value: _imageRepository)
       ],
       child: MultiBlocProvider(
         providers: [
           BlocProvider(
             create: (_) => GameCubit(
               gameRepository: _gameRepository,
+              userRepository: _userRepository,
+              authRepository: _authRepository,
+              imageRepository: _imageRepository,
             )..load(),
           ),
         ],

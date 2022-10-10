@@ -8,32 +8,44 @@
 import 'package:auth_repository/auth_repository.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:game_repository/game_repository.dart';
+import 'package:image_repository/image_repository.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:pictordle/app/app.dart';
-import 'package:pictordle/counter/counter.dart';
+import 'package:pictordle/game/view/game_page.dart';
+import 'package:user_repository/user_repository.dart';
 
-class MockAuthRepository extends Mock implements AuthRepository {}
+class _MockGameRepository extends Mock implements GameRepository {}
 
-class MockGameRepository extends Mock implements GameRepository {}
+class _MockUserRepository extends Mock implements UserRepository {}
+
+class _MockAuthRepository extends Mock implements AuthRepository {}
+
+class _MockImageRepository extends Mock implements ImageRepository {}
 
 void main() {
   group('App', () {
-    late AuthRepository authRepository;
     late GameRepository gameRepository;
+    late UserRepository userRepository;
+    late AuthRepository authRepository;
+    late ImageRepository imageRepository;
 
     setUp(() {
-      authRepository = MockAuthRepository();
-      gameRepository = MockGameRepository();
+      gameRepository = _MockGameRepository();
+      userRepository = _MockUserRepository();
+      authRepository = _MockAuthRepository();
+      imageRepository = _MockImageRepository();
     });
 
     testWidgets('renders CounterPage', (tester) async {
       await tester.pumpWidget(
         App(
-          authRepository: authRepository,
           gameRepository: gameRepository,
+          userRepository: userRepository,
+          authRepository: authRepository,
+          imageRepository: imageRepository,
         ),
       );
-      expect(find.byType(CounterPage), findsOneWidget);
+      expect(find.byType(GamePage), findsOneWidget);
     });
   });
 }

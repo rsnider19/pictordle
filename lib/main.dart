@@ -7,20 +7,27 @@
 
 import 'package:auth_repository/auth_repository.dart';
 import 'package:game_repository/game_repository.dart';
+import 'package:image_repository/image_repository.dart';
 import 'package:pictordle/app/app.dart';
 import 'package:pictordle/bootstrap.dart';
+import 'package:user_repository/user_repository.dart';
 
 void main() {
   bootstrap(
-    (firebaseAuth, firebaseFirestore) async {
+    (firebaseAuth, firebaseFirestore, firebaseStorage) async {
+      final gameRepository = GameRepository(firebaseFirestore);
+      final userRepository = UserRepository(firebaseFirestore);
+
       final authRepository = AuthRepository(firebaseAuth);
       await authRepository.authenticateAnonymously();
 
-      final gameRepository = GameRepository(firebaseFirestore);
+      final imageRepository = ImageRepository(firebaseStorage);
 
       return App(
-        authRepository: authRepository,
         gameRepository: gameRepository,
+        userRepository: userRepository,
+        authRepository: authRepository,
+        imageRepository: imageRepository,
       );
     },
   );

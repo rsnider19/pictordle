@@ -1,7 +1,8 @@
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:game_repository/game_repository.dart';
+import 'package:image_repository/image_repository.dart';
 import 'package:pictordle/game/cubit/game_cubit.dart';
 import 'package:pictordle/game/view/widgets/gameboard/gameboard_row_widget.dart';
 
@@ -18,19 +19,10 @@ class Gameboard extends StatefulWidget {
 }
 
 class _GameboardState extends State<Gameboard> {
-  late final Future<String> downloadUrl;
-
-  @override
-  void initState() {
-    super.initState();
-
-    final ref = 'pictordles/${widget.pictordleWord.toLowerCase()}.png';
-    downloadUrl = FirebaseStorage.instance.ref().child(ref).getDownloadURL();
-  }
-
   @override
   Widget build(BuildContext context) {
     final state = context.select((GameCubit cubit) => cubit.state);
+    final imageRepository = context.read<ImageRepository>();
 
     return Padding(
       padding: const EdgeInsets.symmetric(
@@ -41,18 +33,9 @@ class _GameboardState extends State<Gameboard> {
         alignment: Alignment.center,
         children: [
           Positioned.fill(
-            child: FutureBuilder<String>(
-              future: downloadUrl,
-              builder: (_, snapshot) {
-                if (snapshot.hasData) {
-                  return Image.network(
-                    snapshot.data!,
-                    fit: BoxFit.fitWidth,
-                  );
-                }
-
-                return const SizedBox();
-              },
+            child: CachedNetworkImage(
+              imageUrl: imageRepository.imageUrl,
+              fit: BoxFit.fitWidth,
             ),
           ),
           Column(

@@ -8,15 +8,15 @@ class GameState extends Equatable {
     this.status = GameStatus.initial,
     this.currentGame,
     this.keyboardKeys = const [],
+    this.user,
   });
 
   final GameStatus status;
   final Game? currentGame;
   final List<KeyboardKey> keyboardKeys;
+  final User? user;
 
   List<String> get correctLetters => keyboardKeys.where((key) => key.state.isCorrect).map((key) => key.key).toList();
-
-  List<String> get incorrectLetters => keyboardKeys.where((key) => key.state.isIncorrect).map((key) => key.key).toList();
 
   String get wordOfTheDay => currentGame!.wordOfTheDay;
 
@@ -30,11 +30,13 @@ class GameState extends Equatable {
     GameStatus? status,
     Game? currentGame,
     List<KeyboardKey>? keyboardKeys,
+    User? user,
   }) {
     return GameState(
       status: status ?? this.status,
       currentGame: currentGame,
       keyboardKeys: keyboardKeys ?? this.keyboardKeys,
+      user: user ?? this.user,
     );
   }
 
@@ -43,5 +45,6 @@ class GameState extends Equatable {
         status,
         currentGame,
         keyboardKeys,
+        user,
       ];
 }
