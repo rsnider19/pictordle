@@ -1,5 +1,7 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:pictordle/help/help_example.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HelpContent extends StatelessWidget {
   const HelpContent({
@@ -110,6 +112,38 @@ class HelpContent extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
             ),
+            const SizedBox(height: 8),
+            Center(
+              child: RichText(
+                text: TextSpan(
+                  children: [
+                    TextSpan(
+                      text: 'Large Icons',
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          launchUrl(Uri.parse('https://icons8.com/icon/YK0qQs1lrfdW/large-icons'));
+                        },
+                      style: const TextStyle(
+                        decoration: TextDecoration.underline,
+                      ),
+                    ),
+                    const TextSpan(
+                      text: ' by ',
+                    ),
+                    TextSpan(
+                      text: 'Icons8',
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          launchUrl(Uri.parse('https://icons8.com/'));
+                        },
+                      style: const TextStyle(
+                        decoration: TextDecoration.underline,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            )
           ],
         ),
       ),

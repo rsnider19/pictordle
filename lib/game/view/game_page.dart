@@ -42,7 +42,13 @@ class GamePage extends StatelessWidget {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Pictordle'),
+          title: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Image.asset('assets/Icon-48.png', fit: BoxFit.fitHeight, height: 36,),
+              const Text('Pictordle'),
+            ],
+          ),
           centerTitle: true,
           actions: [
             BlocBuilder<GameCubit, GameState>(

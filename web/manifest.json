@@ -3,9 +3,9 @@
     "short_name": "Pictordle",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A Very Good Project created by Very Good CLI.",
+    "background_color": "#9C27B0",
+    "theme_color": "#9C27B0",
+    "description": "It's Wordle...but with pictures",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
