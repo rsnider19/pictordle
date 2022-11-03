@@ -112,7 +112,7 @@ class _GameViewState extends State<GameView> with AfterLayoutMixin {
       child: Column(
         children: const [
           Expanded(
-            child: Gameboard(pictordleWord: 'CIGAR'),
+            child: Gameboard(),
           ),
           Keyboard(),
         ],

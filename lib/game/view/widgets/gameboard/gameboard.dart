@@ -9,10 +9,7 @@ import 'package:pictordle/game/view/widgets/gameboard/gameboard_row_widget.dart'
 class Gameboard extends StatefulWidget {
   const Gameboard({
     super.key,
-    required this.pictordleWord,
   });
-
-  final String pictordleWord;
 
   @override
   State<Gameboard> createState() => _GameboardState();
