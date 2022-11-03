@@ -26,33 +26,35 @@ class _GameboardState extends State<Gameboard> {
         vertical: 8,
         horizontal: 32,
       ),
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          Positioned.fill(
-            child: CachedNetworkImage(
-              imageUrl: imageRepository.imageUrl,
-              fit: BoxFit.fitWidth,
+      child: Center(
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            Positioned.fill(
+              child: CachedNetworkImage(
+                imageUrl: imageRepository.imageUrl,
+                fit: BoxFit.fitHeight,
+              ),
             ),
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ...List.generate(
-                6,
-                (index) => Flexible(
-                  child: GameboardRowWidget(
-                    guess: state.guesses[index],
-                    isRowComplete: index < state.currentIndex,
-                    isGameComplete: state.stateOfPlay != StateOfPlay.inProgress,
-                    correctLetters: state.correctLetters,
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ...List.generate(
+                  6,
+                  (index) => Flexible(
+                    child: GameboardRowWidget(
+                      guess: state.guesses[index],
+                      isRowComplete: index < state.currentIndex,
+                      isGameComplete: state.stateOfPlay != StateOfPlay.inProgress,
+                      correctLetters: state.correctLetters,
+                    ),
                   ),
                 ),
-              ),
-            ],
-          ),
-        ],
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
