@@ -1,10 +1,8 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:game_repository/game_repository.dart';
 import 'package:pictordle/game/cubit/game_cubit.dart';
-import 'package:share_plus/share_plus.dart';
+import 'package:pictordle/results/share_to/share_to.dart';
 import 'package:user_repository/user_repository.dart';
 
 class ResultsDialog extends StatelessWidget {
@@ -146,23 +144,7 @@ class ResultsDialog extends StatelessWidget {
                       '${state.currentGame!.toEmojis()}\n'
                       'pictordle.com';
 
-                  if (kIsWeb) {
-                    Clipboard.setData(ClipboardData(text: results));
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
-                            Text('Copied to clipboard'),
-                          ],
-                        ),
-                        width: 175,
-                        behavior: SnackBarBehavior.floating,
-                      ),
-                    );
-                  } else {
-                    Share.share(results);
-                  }
+                  ShareTo().share(context, results);
                 },
                 style: ElevatedButton.styleFrom(elevation: 0),
                 child: Row(
