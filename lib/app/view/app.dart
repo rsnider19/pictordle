@@ -11,10 +11,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:game_repository/game_repository.dart';
 import 'package:image_repository/image_repository.dart';
-import 'package:pictordle/core/shared_pref_keys.dart';
 import 'package:pictordle/game/cubit/game_cubit.dart';
 import 'package:pictordle/game/view/view.dart';
-import 'package:pictordle/help/help_page.dart';
 import 'package:pictordle/l10n/l10n.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:user_repository/user_repository.dart';
@@ -62,10 +60,9 @@ class App extends StatelessWidget {
         ],
         child: MaterialApp(
           theme: ThemeData(
-            appBarTheme: const AppBarTheme(color: Color(0xFF13B9FF)),
-            colorScheme: ColorScheme.fromSwatch(
-              accentColor: const Color(0xFF13B9FF),
-            ),
+            primarySwatch: Colors.purple,
+            visualDensity: VisualDensity.standard,
+            materialTapTargetSize: MaterialTapTargetSize.padded,
           ),
           localizationsDelegates: const [
             AppLocalizations.delegate,
@@ -75,15 +72,6 @@ class App extends StatelessWidget {
           initialRoute: GamePage.routeName,
           routes: {
             GamePage.routeName: (context) => const GamePage(),
-            HelpPage.routeName: (context) => const HelpPage(),
-          },
-          onGenerateInitialRoutes: (_) {
-            final helpPageViewed = _sharedPreferences.getBool(SharedPrefKeys.helpPageViewed.name) ?? false;
-
-            return [
-              GamePage.route(),
-              if (!helpPageViewed) HelpPage.route(),
-            ];
           },
         ),
       ),

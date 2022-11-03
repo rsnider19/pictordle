@@ -13,49 +13,49 @@ class HelpPage extends StatelessWidget {
 
   static const routeName = '/help';
 
-  static Route<HelpPage> route() {
-    return MaterialPageRoute(
-      builder: (context) => const HelpPage(),
-      settings: const RouteSettings(
-        name: routeName,
+  static Future<void> open(BuildContext context) async {
+    final sharedPrefs = context.read<SharedPreferences>();
+
+    await showDialog<void>(
+      context: context,
+      builder: (_) => const HelpPage(),
+    );
+
+    unawaited(
+      sharedPrefs.setBool(
+        SharedPrefKeys.helpPageViewed.name,
+        true,
       ),
-      fullscreenDialog: true,
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        unawaited(
-          context.read<SharedPreferences>().setBool(
-                SharedPrefKeys.helpPageViewed.name,
-                true,
+    return AlertDialog(
+      titlePadding: EdgeInsets.zero,
+      title: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: const [
+              Padding(
+                padding: EdgeInsets.only(left: 24),
+                child: Text(
+                  'How to play',
+                  style: TextStyle(color: Colors.black),
+                ),
               ),
-        );
-        return true;
-      },
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          leading: const CloseButton(color: Colors.black),
-          title: const Text(
-            'How to play',
-            style: TextStyle(color: Colors.black),
+              CloseButton(color: Colors.black),
+            ],
           ),
-          centerTitle: true,
-          elevation: 0,
-        ),
-        body: Align(
-          alignment: Alignment.topCenter,
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(
-              maxWidth: 500,
-            ),
-            child: const HelpContent(),
+          const Divider(
+            height: 1,
+            indent: 24,
+            endIndent: 24,
           ),
-        ),
+        ],
       ),
+      content: const HelpContent(),
     );
   }
 }

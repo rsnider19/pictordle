@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:image_repository/image_repository.dart';
 import 'package:pictordle/help/help_example.dart';
 
 class HelpContent extends StatelessWidget {
@@ -10,13 +8,15 @@ class HelpContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final imageRepository = context.read<ImageRepository>();
-
-    return Padding(
-      padding: const EdgeInsets.all(16),
+    return ConstrainedBox(
+      constraints: BoxConstraints.tightFor(
+        width: 500,
+        height: MediaQuery.of(context).size.height,
+      ),
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
           children: [
             ...const [
               Text('Guess the Pictordle in 6 tries.'),
@@ -24,7 +24,7 @@ class HelpContent extends StatelessWidget {
               Text('Each guess must be a valid 5 letter word. Hit the enter button to submit.'),
               SizedBox(height: 16),
               Text('After each guess, any correct letters will reveal part '
-                  'of the picture and appear orange on the keyboard. This '
+                  'of the picture and appear purple on the keyboard. This '
                   'does not mean that the letter is in the correct spot; '
                   'it just means that it is in the word.'),
               Divider(height: 32),
@@ -32,7 +32,11 @@ class HelpContent extends StatelessWidget {
             Stack(
               children: [
                 Positioned.fill(
-                  child: Image.asset('assets/apple.png'),
+                  child: Image.asset(
+                    'assets/apple.png',
+                    fit: BoxFit.fitWidth,
+                    alignment: Alignment.topCenter,
+                  ),
                 ),
                 const HelpExample(
                   guess: 'CHAIR',
@@ -59,7 +63,11 @@ class HelpContent extends StatelessWidget {
             Stack(
               children: [
                 Positioned.fill(
-                  child: Image.asset('assets/apple.png'),
+                  child: Image.asset(
+                    'assets/apple.png',
+                    fit: BoxFit.fitWidth,
+                    alignment: Alignment.topCenter,
+                  ),
                 ),
                 Column(
                   children: const [

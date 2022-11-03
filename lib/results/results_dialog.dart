@@ -1,4 +1,6 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:game_repository/game_repository.dart';
 import 'package:pictordle/game/cubit/game_cubit.dart';
@@ -30,7 +32,7 @@ class ResultsDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return AlertDialog(
       titlePadding: EdgeInsets.zero,
-      contentPadding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
+      contentPadding: const EdgeInsets.fromLTRB(24, 0, 24, 0),
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -139,11 +141,28 @@ class ResultsDialog extends StatelessWidget {
               ElevatedButton(
                 onPressed: () {
                   final state = context.read<GameCubit>().state;
-                  Share.share(
-                    "I finished today's #Pictordle in ${state.currentIndex + 1} guesses!\n"
-                    '${state.currentGame!.toEmojis()}\n'
-                    'pictordle.com',
-                  );
+                  final results = "I finished today's #Pictordle in "
+                      '${state.currentIndex + 1} guesses!\n'
+                      '${state.currentGame!.toEmojis()}\n'
+                      'pictordle.com';
+
+                  if (kIsWeb) {
+                    Clipboard.setData(ClipboardData(text: results));
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            Text('Copied to clipboard'),
+                          ],
+                        ),
+                        width: 175,
+                        behavior: SnackBarBehavior.floating,
+                      ),
+                    );
+                  } else {
+                    Share.share(results);
+                  }
                 },
                 style: ElevatedButton.styleFrom(elevation: 0),
                 child: Row(

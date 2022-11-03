@@ -8,6 +8,7 @@ environment:
   flutter: 3.3.3
 
 dependencies:
+  after_layout: ^1.2.0
   auth_repository:
     path: packages/auth_repository
   bloc: ^8.1.0

@@ -64,7 +64,7 @@ class Game extends Equatable {
         (e) => e
             .split('')
             .map(
-              (e) => wordOfTheDay.contains(e) ? '🟧' : '⬜️',
+              (e) => wordOfTheDay.contains(e) ? '🟪' : '⬜️',
             )
             .join(),
       )

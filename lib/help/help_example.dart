@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:pictordle/game/view/widgets/gameboard/gameboard_row_widget.dart';
 
@@ -18,7 +20,7 @@ class HelpExample extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         return SizedBox(
-          width: constraints.maxWidth / 2,
+          width: max(constraints.maxWidth / 2, 200),
           child: GameboardRowWidget(
             correctLetters: correctLetters,
             guess: guess,

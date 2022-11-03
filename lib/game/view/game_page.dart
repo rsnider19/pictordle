@@ -1,11 +1,16 @@
+import 'dart:async';
+
+import 'package:after_layout/after_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:game_repository/game_repository.dart';
+import 'package:pictordle/core/shared_pref_keys.dart';
 import 'package:pictordle/game/cubit/game_cubit.dart';
 import 'package:pictordle/game/view/widgets/widgets.dart';
 import 'package:pictordle/help/help_page.dart';
 import 'package:pictordle/loader/loader.dart';
 import 'package:pictordle/results/results_dialog.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class GamePage extends StatelessWidget {
   const GamePage({
@@ -53,7 +58,7 @@ class GamePage extends StatelessWidget {
               },
             ),
             IconButton(
-              onPressed: () => Navigator.of(context).push(HelpPage.route()),
+              onPressed: () => HelpPage.open(context),
               icon: const Icon(Icons.help_outline),
             ),
           ],
@@ -85,11 +90,16 @@ class GamePage extends StatelessWidget {
   }
 }
 
-class GameView extends StatelessWidget {
+class GameView extends StatefulWidget {
   const GameView({
     super.key,
   });
 
+  @override
+  State<GameView> createState() => _GameViewState();
+}
+
+class _GameViewState extends State<GameView> with AfterLayoutMixin {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -102,5 +112,15 @@ class GameView extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  @override
+  FutureOr<void> afterFirstLayout(BuildContext context) {
+    final sharedPrefs = context.read<SharedPreferences>();
+    final helpPageViewed = sharedPrefs.getBool(SharedPrefKeys.helpPageViewed.name) ?? false;
+
+    if (!helpPageViewed) {
+      HelpPage.open(context);
+    }
   }
 }
